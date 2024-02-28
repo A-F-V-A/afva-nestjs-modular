@@ -1,7 +1,8 @@
 import {
     Controller, Get, Post, Delete, Put,
     Param, Query, Body,
-    HttpCode, HttpStatus
+    HttpCode, HttpStatus,
+    Inject
 } from '@nestjs/common'
 
 import { ProductsService } from '../services/products.service'
@@ -10,7 +11,16 @@ import { CreateProductDto,UpdateProductDto } from '../dtos/products.dtos'
 @Controller('products')
 export class ProductsController {
 
-  constructor(private productsService: ProductsService) {}
+  constructor(private productsService: ProductsService,@Inject('APP_NAME') private appName : string) {}
+
+  @Get('global')
+  getGlobal(){
+    return {
+      message: `name app:${this.appName}`
+    }
+  }
+
+
 
   @Get('')
   getProducts(

@@ -2,14 +2,12 @@ import { Module } from '@nestjs/common'
 import { HttpModule, HttpService  } from '@nestjs/axios'
 import { lastValueFrom } from 'rxjs'
 import { ProductsModule } from './products/products.module'
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [HttpModule,ProductsModule],
+  imports: [HttpModule,ProductsModule, DatabaseModule],
   controllers: [],
-  providers: [{
-    provide: 'APP_NAME',
-    useValue: 'NestJS'
-  },
+  providers: [
   {
     provide: 'TASKS',
     useFactory: async (http:HttpService) => {
