@@ -4,19 +4,28 @@ import {
     HttpCode, HttpStatus,
     Inject
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { ApiTags, ApiOperation } from '@nestjs/swagger'
 
 import { ProductsService } from '../services/products.service'
-import { CreateProductDto,UpdateProductDto } from '../dtos/products.dtos'
+import { CreateProductDto,UpdateProductDto } from '../dtos/products.dto'
 
+@ApiTags('products')
 @Controller('products')
 export class ProductsController {
 
-  constructor(private productsService: ProductsService,@Inject('APP_NAME') private appName : string) {}
+  constructor(
+      private productsService: ProductsService,
+      @Inject('APP_NAME') private appName : string,
+      private configService: ConfigService
+  ) {}
 
   @Get('global')
+  @ApiOperation({summary: 'Env global'})
   getGlobal(){
+    const apiKey = this.configService.get('API_KEY')
     return {
-      message: `name app:${this.appName}`
+      message: `name app:${this.appName} configService:${apiKey}`
     }
   }
 
